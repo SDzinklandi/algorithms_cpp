@@ -104,19 +104,16 @@ bool PriorityQueue::isEmpty() {
     return true;
 }
 
-//TODO develop the search method!!!
 Element* PriorityQueue::search(Element e) {
 
-    if(_size = 0){
-        return nullptr;
+    if(!isEmpty()){
+
+        for(int i = 0; i < _size; i++) {
+            Element elem = elements[i];
+            //compare the element
+        }
     }
 
-    for(int i = 0; i < _size; i++) {
-        Element elem = elements[i];
-        /*if(elem.node->equals(node)) {
-            return &elem;
-        }*/
-    }
-
+    // nothing found or the pq is empty
     return nullptr;
 }
