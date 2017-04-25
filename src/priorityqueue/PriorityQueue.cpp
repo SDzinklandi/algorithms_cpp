@@ -104,7 +104,7 @@ bool PriorityQueue::isEmpty() {
     return true;
 }
 
-Element* PriorityQueue::search(Element e) {
+Element* PriorityQueue::search(Node* n) {
 
     if(!isEmpty()){
 

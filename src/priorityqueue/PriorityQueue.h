@@ -40,7 +40,7 @@ public:
 
     bool isEmpty();
 
-    Element* search(Element e);
+    Element* search(Node* n);
 
 };
 
