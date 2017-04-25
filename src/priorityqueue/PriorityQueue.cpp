@@ -3,7 +3,7 @@
 //
 
 #include <cstdio>
-#include "priorityqueue.h"
+#include "PriorityQueue.h"
 
 void PriorityQueue::heapify(Element *e, int first, int last, int root) {
     int largest = 0;
