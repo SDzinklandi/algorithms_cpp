@@ -10,14 +10,17 @@
 class Element {
 
 private:
-    Node* _objectAddress;
+    Node* _node;
     int _priority;
 
 public:
-    Element(Node* _objectAdress, int priority);
 
-    Node* getElement();
+    Element();
+    Element(Node *node, int priority);
+    ~Element();
 
+    Node* getNode();
+    void setNode(Node* node);
     void setPriority(int prio);
     int getPriority();
 };

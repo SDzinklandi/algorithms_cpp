@@ -4,10 +4,10 @@
 
 #include "Element.h"
 
-Element::Element(Node *node, int priority) : _node(node), _priority(priority) {}
+Element::Element(Node* objectAddress, int priority) : _objectAddress(objectAddress), _priority(priority) {}
 
 Node* Element::getElement() {
-    return _node;
+    return _objectAddress;
 }
 
 void Element::setPriority(int prio) {
