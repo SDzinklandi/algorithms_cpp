@@ -19,4 +19,8 @@
 // The droven distance
 #define DROVENDISTANCE 20 //this will later contain an method call
 
+// The call for the current position //todo we need to change that to get the real position
+#define WHEREAMI_X(x) x+2
+#define WHEREAMI_Y(y) y+2
+
 #endif //ALGORITHMS_CPP_DEVICECONFIGURATION_H

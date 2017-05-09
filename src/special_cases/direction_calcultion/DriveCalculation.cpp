@@ -24,6 +24,11 @@ void DriveCalculation::updateCurrentPosition(float x, float y) {
 
     // todo check if the current position is correct
 
+    // save first the old position
+    lastPositionKnown.x = current.x;
+    lastPositionKnown.y = current.y;
+
+    //now update to the new position
     current.x = x;
     current.y = y;
 }
@@ -98,12 +103,23 @@ short DriveCalculation::checkCurrentDirection() {
 
 void DriveCalculation::initCalculation() {
 
-    // Drive a 30cm line and look for the new position
-    // check the uwb where's the current and new position
+    // call the vehicle and tell it needs to drive about the size of the radius
+    //todo implement the call
 
     // now update the current position
+    updateCurrentPosition(WHEREAMI_X(current.x), WHEREAMI_Y(current.y));
 
     // check where the middle point of the circle is and set the values
+    float xVect = current.x-lastPositionKnown.x;
+    float yVect = current.y-lastPositionKnown.y;
+
+    // todo calculate where the middle point is
+    //float middleDirection = checkDestinationDirection();
+    //if(middleDirection == LEFT_DIRECTION) yVect*=(-1);
+    //else if(middleDirection == RIGHT_DIRECTION) xVect*=(-1);
+
+    //circleCore.x = current.x+CIRCLERADIUS;
+    //circleCore.y = current.y+CIRCLERADIUS*yVect;
 }
 
 void DriveCalculation::changeTo(short direction) {
@@ -135,5 +151,5 @@ int DriveCalculation::calculate(float destinationX, float destinationY) {
     // drive forward to the destination
     changeTo(FORWARD_DIRECTION);
 
-    return 0; // all good now
+    return 0; // all good now - drive straight and have fun! ;-)
 }
