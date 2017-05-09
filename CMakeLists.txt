@@ -3,23 +3,9 @@ project(algorithms_cpp)
 
 set(CMAKE_CXX_STANDARD 14)
 
-macro (add_sources)
-    file (RELATIVE_PATH _relPath "${PROJECT_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
-    foreach (_src ${ARGN})
-        if (_relPath)
-            list (APPEND SRCS "${_relPath}/${_src}")
-        else()
-            list (APPEND SRCS "${_src}")
-        endif()
-    endforeach()
-    if (_relPath)
-        # propagate SRCS to parent directory
-        set (SRCS ${SRCS} PARENT_SCOPE)
-    endif()
-endmacro()
+set(MAIN_SOURCES main.cpp)
+file(GLOB_RECURSE directionProject src/special_cases/direction_calcultion/*.cpp src/special_cases/direction_calcultion/*.h)
+file(GLOB_RECURSE priorityQueue src/priorityqueue/*.cpp src/priorityqueue/*.h)
+file(GLOB_RECURSE navigationProject src/special_cases/navigation_routing/*.cpp src/special_cases/navigation_routing/*.h)
 
-add_sources(main.cpp)
-add_subdirectory(src/priorityqueue)
-add_subdirectory(src/special_cases/navigation_routing)
-
-add_executable(algorithms_cpp ${SRCS})
+add_executable(algorithms_cpp ${MAIN_SOURCES} ${priorityQueue} ${directionProject} ${navigationProject})
