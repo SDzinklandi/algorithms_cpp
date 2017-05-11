@@ -16,7 +16,8 @@
 // Calculation of the radius
 #define CIRCLERADIUS WHEELBASE/sin(MAXWHEELLOCK)
 
-// The droven distance
+// The droven distance for the configuration and the general distance
+#define INIT_CONFIG_DISTANCE 30
 #define DROVENDISTANCE 20 //this will later contain an method call
 
 // The call for the current position //todo we need to change that to get the real position

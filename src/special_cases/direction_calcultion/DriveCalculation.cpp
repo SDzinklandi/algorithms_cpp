@@ -36,41 +36,22 @@ void DriveCalculation::updateCurrentPosition(float x, float y) {
 short DriveCalculation::checkDestinationDirection() {
 
     // Get the driving direction
-    short xVec = current.x-lastPositionKnown.x;
-    short yVec = current.y-lastPositionKnown.y;
-    struct Position posVector;// = { xVec, yVec };
-    posVector.x = xVec;
-    posVector.y = yVec;
+    struct Vector* posVector = new Vector(current, lastPositionKnown);
 
     // Get the destination direction
-    xVec = destination.x-lastPositionKnown.x;
-    yVec = destination.y-lastPositionKnown.y;
-    struct Position destVector;// = { xVec, yVec };
-    destVector.y = yVec;
-    destVector.x = xVec;
-
-    // Check depending on the driving direction, if the destination is to it's left or right side
-    /*
-     * calculate currentposition-lastpositionknown (from 2d to 3d) -> vector A
-     * calculate destinationposition-lastpositionknown (from 2d to 3d) -> vector B
-     *
-     * vector A         vector B
-     * a1               b1
-     * a2               b2
-     * a3 = 0           b3 = 0
-     *
-     *
-     * the z coordinate of the cross product of both vectors is where it lies. (a1*b2-a2*b1)
-     * - positive means it is to the left side
-     * - negative means it is to thre right side
-     */
-    short position = posVector.x*destVector.y - posVector.y*destVector.x;
+    struct Vector* destVector = new Vector(destination, lastPositionKnown);
 
     // return the direction
-    return position < 0 ? RIGHT_DIRECTION : LEFT_DIRECTION;
+    return posVector->getSideOf(destVector);
 }
 
 short DriveCalculation::checkCurrentDirection() {
+
+    // check if we are on the route and return if we are
+    struct Vector* posVector = new Vector(current, lastPositionKnown);
+    if(posVector->isOnLineTo(&destination)) return DIRECTION_CHANGE_NOT_NEEDED;
+
+    // now we need to calculate the direction change, because the destination is not on the straight drove
 
     // get the current position
     float currX = current.x;
@@ -81,13 +62,13 @@ short DriveCalculation::checkCurrentDirection() {
     float alpha =  distance*360/2*M_PI*CIRCLERADIUS;
 
     // get the position on the circle by the droven distance
-    float addHeight = sin(alpha) / CIRCLERADIUS;
+    /*float addHeight = sin(alpha) / CIRCLERADIUS;
     float addWidth = cos(alpha) / CIRCLERADIUS;
     currX += addWidth;
     currY += addHeight;
 
     // update the current position if necessary
-    if(currX != current.x || currY != current.y) updateCurrentPosition(currX, currY);
+    if(currX != current.x || currY != current.y) updateCurrentPosition(currX, currY);*/
 
     // generate tangente (y = -1/m * x + n) --> n = x coordinate of circle core
     float gradient = (circleCore.y-currY)/(circleCore.x-currX);
@@ -104,35 +85,43 @@ short DriveCalculation::checkCurrentDirection() {
 void DriveCalculation::initCalculation() {
 
     // call the vehicle and tell it needs to drive about the size of the radius
-    //todo implement the call INIT_CONFIG_DISTANCE
+    //todo implement the call for the drive of the INIT_CONFIG_DISTANCE
 
     // now update the current position
     updateCurrentPosition(WHEREAMI_X(current.x), WHEREAMI_Y(current.y));
 
-    // check where the middle point of the circle is and set the values
-    float xVect = current.x-lastPositionKnown.x;
-    float yVect = current.y-lastPositionKnown.y;
+    // now just check first if we are directly on the route to the destination
+    if(checkCurrentDirection() == DIRECTION_CHANGE_NOT_NEEDED) return; // we don't need to change or calculate anything!
+
+    // get the current vector
+    Vector* currVec = new Vector(current, lastPositionKnown);
+
+    // calculate a point which is on the same x-coord like the last known position
+    // we will use this one for the calculation of the vector which is parallel to the x-axis
+    struct Position parallelX;
+    parallelX.x = current.x;
+    parallelX.y = lastPositionKnown.y;
+
+    // get the parallel x-axis vector by using the parallelX coordinate
+    Vector* parrVec = new Vector(parallelX, lastPositionKnown);
+
+    // get the rotation angle
+    float rotationAngle = parrVec->getAngleTo(currVec);
 
     // todo calculate where the middle point is
     // todo the coordinates on the circle are (x*(r*cos(alpha)),y*(r*sin(alpha)))
-    short degrees = 90;//todo drehwinkel berechnen u. hinzufügen
-    short middleX = current.x*(CIRCLERADIUS*cos(degrees));
-    short middleY = current.y*(CIRCLERADIUS*cos(degrees));
+    float degrees = DEGTORAD(90 + rotationAngle);
+    float middleX = current.x*(CIRCLERADIUS*cos(degrees));
+    float middleY = current.y*(CIRCLERADIUS*sin(degrees));
 
-    //float middleDirection = checkDestinationDirection();
-    //if(middleDirection == LEFT_DIRECTION) yVect*=(-1);
-    //else if(middleDirection == RIGHT_DIRECTION) xVect*=(-1);
-
-
-
-    //circleCore.x = current.x+CIRCLERADIUS;
-    //circleCore.y = current.y+CIRCLERADIUS*yVect;
-
+    // Save the calculated coordinates
+    circleCore.x = middleX;
+    circleCore.y = middleY;
 }
 
 void DriveCalculation::changeTo(short direction) {
 
-    // todo tell the vehicel what to do
+    // todo tell the vehicle what to do
 
 }
 
