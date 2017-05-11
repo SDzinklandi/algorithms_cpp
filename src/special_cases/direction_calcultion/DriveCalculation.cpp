@@ -104,7 +104,7 @@ short DriveCalculation::checkCurrentDirection() {
 void DriveCalculation::initCalculation() {
 
     // call the vehicle and tell it needs to drive about the size of the radius
-    //todo implement the call
+    //todo implement the call INIT_CONFIG_DISTANCE
 
     // now update the current position
     updateCurrentPosition(WHEREAMI_X(current.x), WHEREAMI_Y(current.y));
@@ -114,12 +114,20 @@ void DriveCalculation::initCalculation() {
     float yVect = current.y-lastPositionKnown.y;
 
     // todo calculate where the middle point is
+    // todo the coordinates on the circle are (x*(r*cos(alpha)),y*(r*sin(alpha)))
+    short degrees = 90;//todo drehwinkel berechnen u. hinzufügen
+    short middleX = current.x*(CIRCLERADIUS*cos(degrees));
+    short middleY = current.y*(CIRCLERADIUS*cos(degrees));
+
     //float middleDirection = checkDestinationDirection();
     //if(middleDirection == LEFT_DIRECTION) yVect*=(-1);
     //else if(middleDirection == RIGHT_DIRECTION) xVect*=(-1);
 
+
+
     //circleCore.x = current.x+CIRCLERADIUS;
     //circleCore.y = current.y+CIRCLERADIUS*yVect;
+
 }
 
 void DriveCalculation::changeTo(short direction) {
