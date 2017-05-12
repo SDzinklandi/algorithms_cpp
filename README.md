@@ -12,5 +12,7 @@ There are no algorithms implemented yet.
 
 #### Small Projects:
 - Route Navigation with A-Star Algorithm! Uses the Manhatten-Heuristic!
+- Direction Calculation by using vectors of start and destination points in a coordinate system (only coordinates of the first quadrant).
 
+### Sharing - Feedback - Thanks!
 Feel free to share and tell me if you find some mistakes! :-)
