@@ -6,6 +6,7 @@ The algorithms can be used as an idea for your own algorithms and modifications.
 ### Implemented Algorithms:
 #### Data Structures:
 - Priority Queue
+- Stack (with Template T)
 
 #### Algorithms:
 There are no algorithms implemented yet.
