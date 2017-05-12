@@ -7,17 +7,11 @@
 
 #include "DeviceConfiguration.h"
 #include <math.h>
+#include "Vector.h"
 
 #define DIRECTION_CHANGE_NEEDED 1
 #define DIRECTION_CHANGE_NOT_NEEDED 0
-#define LEFT_DIRECTION 0
-#define RIGHT_DIRECTION 1
 #define FORWARD_DIRECTION -1
-
-struct Position {
-    float x;
-    float y;
-};
 
 class DriveCalculation {
 
@@ -38,7 +32,6 @@ public:
     ~DriveCalculation();
 
     int calculate(float destinationX, float destinationY);
-
 };
 
 
