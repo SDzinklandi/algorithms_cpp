@@ -37,8 +37,12 @@ public:
     float getX();
     float getY();
 
+    Position* getHead();
+    Position* getFoot();
+
     float getAngleTo(Vector *v);
     short getSideOf(Vector *v);
+    short rotate(float degrees);
     bool isOnLineTo(struct Position* p);
 };
 

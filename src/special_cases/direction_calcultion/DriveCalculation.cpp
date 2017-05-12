@@ -2,6 +2,7 @@
 // Created by Andreas Zinkl on 07.05.17.
 //
 
+#include <iostream>
 #include "DriveCalculation.h"
 
 DriveCalculation::DriveCalculation(float startX, float startY) {
@@ -105,18 +106,23 @@ void DriveCalculation::initCalculation() {
     // get the parallel x-axis vector by using the parallelX coordinate
     Vector* parrVec = new Vector(parallelX, lastPositionKnown);
 
-    // get the rotation angle
-    float rotationAngle = parrVec->getAngleTo(currVec);
+    // get the additional rotation angle
+    float rotationAngle = currVec->getAngleTo(parrVec);
 
-    // todo calculate where the middle point is
-    // todo the coordinates on the circle are (x*(r*cos(alpha)),y*(r*sin(alpha)))
-    float degrees = DEGTORAD(90 + rotationAngle);
-    float middleX = current.x*(CIRCLERADIUS*cos(degrees));
-    float middleY = current.y*(CIRCLERADIUS*sin(degrees));
+    // calculate the end rotation angle in degrees
+    float degrees = (float) DEGTORAD(90 + rotationAngle);
+    parallelX.x = current.x+CIRCLERADIUS;
+    parrVec = new Vector(parallelX, lastPositionKnown);
 
-    // Save the calculated coordinates
-    circleCore.x = middleX;
-    circleCore.y = middleY;
+    // rotate the parrallel x-axis vector
+    parrVec->rotate(degrees);
+
+    // save the new middle point calculated coordinates
+    circleCore.x = parrVec->getHead()->x;
+    circleCore.y = parrVec->getHead()->y;
+
+    /* todo   we may get some rounding problems here,
+      todo    first test everything and then may modify the details if there are big problems*/
 }
 
 void DriveCalculation::changeTo(short direction) {

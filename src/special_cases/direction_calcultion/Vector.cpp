@@ -19,6 +19,14 @@ float Vector::getY() {
     return head.y-foot.y;
 }
 
+Position* Vector::getHead() {
+    return &head;
+}
+
+Position* Vector::getFoot() {
+    return &foot;
+}
+
 float Vector::getAngleTo(Vector* v) {
     //calculate the angle between the this vector and the given vector v
     /*
@@ -31,6 +39,9 @@ float Vector::getAngleTo(Vector* v) {
      */
     float dot = getX()*v->getY()+getY()*v->getX();
     float det = sqrtf(quad(getX())+quad(getY())) * sqrtf(quad(v->getX())+quad(v->getY()));
+
+    if(dot/det == 0) return 0;
+
     float alpha = acosf(dot/det);
     alpha = RADTODEG(alpha);
 
@@ -75,4 +86,23 @@ bool Vector::isOnLineTo(struct Position *p) {
     if(angle==0) return true;
 
     return false;
+}
+
+short Vector::rotate(float degrees) {
+
+    // First calculate the values for the rotation matrix
+    // we don't need to generate a matrix, just note the values!
+    double cosDeg = cos(degrees);
+    double msinDeg = -sin(degrees);
+    double sindDeg = sin(degrees);
+
+    // rotate the x and y coordinates
+    float newX = (float) (cosDeg * getX() + msinDeg * getY());
+    float newY = (float) (sindDeg * getX() + cosDeg * getY());
+
+    // save the new values to the head point
+    head.x = foot.x+newX;
+    head.y = foot.y+newY;
+
+    return 0;
 }
