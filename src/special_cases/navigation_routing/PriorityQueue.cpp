@@ -48,7 +48,7 @@ void PriorityQueue::insert(Node* e, int p) {
     //inserts a node e with the priority p
     Element* newElement = new Element(e, p);
     if(_size == 0) {
-        elements = new Element[(MapHeightCM*MapWidthCM)/MapRasterCM/32];
+        elements = new Element[(MapEnvHeight_cm*MapEnvWidth_cm)/MapRasterWidth_cm/32];
     }
     elements[_size] = *newElement;
     _size++;

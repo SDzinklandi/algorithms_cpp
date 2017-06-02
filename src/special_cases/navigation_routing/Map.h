@@ -2,49 +2,57 @@
 // Created by Andreas Zinkl on 25.04.17.
 //
 
-#ifndef ROUTING_MAP_H
-#define ROUTING_MAP_H
-
-#define MapRasterCM 15
-#define MapWidthCM 500
-#define MapHeightCM 500
+#ifndef DT2017_MAP_H
+#define DT2017_MAP_H
 
 #include "Node.h"
 #include <stdlib.h>
+#include "MapConfiguration.h"
 
 /*
  * The map will be saved this way:
- * 000000011100010001110000
- * (read this from right to left)
  *
+ * (read this from right to left)
+ * 0000000000111000100010010000110011100010
  * Mapping:
  * 1 = obstacle
  * 0 = free
- *
- * This displays e.g.:
- * 0 0 0 0 0 0
- * 0 0 1 1 1 0
- * 1 0 0 0 1 0
- * 0 0 0 0 1 1
  */
 
+struct Position {
+    short x;
+    short y;
+};
+
 class Map {
-
-private:
-    unsigned int* nodelist;
-    int _size;
-    bool isFree(int x, int y);
-
-    char* _carX;
-    char* _carY;
 
 public:
     Map();
     ~Map();
+    void init();
+    Position* getLastKnownPosition();
+    Position* getCarPosition();
 
-    Node* getNode(int x, int y);
-    Node* getCarPosition();
-    void getNeighbours(Node* nodelist, int x, int y);
+    Node* getNode(short x, short y);
+    Node* getCarPositionNode();
+
+    short getNeighbours(Node* nodelist, short x, short y);
+    int updateField(short x, short y, bool isObstacle);
+
+
+private:
+    unsigned short* nodelist;
+    short _size;
+    bool isFree(short x, short y);
+
+    struct Position currentPosition;
+    struct Position lastKnownPosition;
+
+    void initTestMap(char* map); // Just for testing purpose
+    void print();
+
+
+
 };
 
 #endif //ROUTING_MAP_H

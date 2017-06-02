@@ -5,11 +5,11 @@
 #include "Node.h"
 
 Node::Node() : _x(0), _y(0), _costs(0){
-    _predessesor = NULL;
+    _predessesor = nullptr;
 }
 
 Node::Node(int x, int y) : _x(x), _y(y), _costs(0) {
-    _predessesor = NULL;
+    _predessesor = nullptr;
 }
 
 Node::~Node() {
